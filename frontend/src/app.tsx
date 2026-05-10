@@ -1,4 +1,10 @@
 import { useEffect, useState } from "react";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { PageLogin } from "./pages/page-login";
+import { PageNotFound } from "./pages/page-not-found";
+import { MainLayout } from "./widgets/main-layout";
+import { PageIndex } from "./pages/page-index";
+import { Router } from "./shared/consts";
 
 const App = () => {
   const [data, setData] = useState(null);
@@ -27,7 +33,15 @@ const App = () => {
   }, []);
 
   return (
-    <>{data ? <pre>{JSON.stringify(data, null, 2)}</pre> : <p>Loading...</p>}</>
+    <BrowserRouter>
+      <MainLayout>
+        <Routes>
+          <Route path={Router.ROOT} element={<PageIndex />} />
+          <Route path={Router.LOGIN} element={<PageLogin />} />
+          <Route path={Router.NOT_FOUND} element={<PageNotFound />} />
+        </Routes>
+      </MainLayout>
+    </BrowserRouter>
   );
 };
 

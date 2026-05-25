@@ -6,6 +6,9 @@ import { MainLayout } from "./widgets/main-layout";
 import { PageIndex } from "./pages/page-index";
 import { Router } from "./shared/consts";
 import { useAppSelector } from "./@redux/hooks";
+import { ModalAddChannel } from "./widgets/modal-add-channel";
+import { ModalRenameChannel } from "./widgets/modal-rename-channel";
+import { ModalDeleteChannel } from "./widgets/modal-delete-channel";
 
 const PrivateRouter: FC<PropsWithChildren> = ({ children }) => {
   const isAuthorized = useAppSelector((state) => state.auth.token) !== null;
@@ -29,6 +32,9 @@ const App = () => {
           />
         </Routes>
       </MainLayout>
+      <ModalAddChannel />
+      <ModalRenameChannel />
+      <ModalDeleteChannel />
     </BrowserRouter>
   );
 };

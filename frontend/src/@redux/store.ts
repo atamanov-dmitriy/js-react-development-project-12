@@ -11,7 +11,10 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/es/storage";
-import { authReducer } from "../features/api/auth.slice";
+import { authReducer } from "../features/model/auth/auth.slice";
+import { authApi } from "../features/model/auth/auth.api";
+import { channelsApi } from "../features/model/channels/channels.api";
+import { channelsReducer } from "../features/model/channels/channels.slice";
 
 const persistConfig = {
   key: "root",
@@ -21,6 +24,9 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  channels: channelsReducer,
+  [authApi.reducerPath]: authApi.reducer,
+  [channelsApi.reducerPath]: channelsApi.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -32,7 +38,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(authApi.middleware, channelsApi.middleware),
 });
 
 const persistor = persistStore(store);

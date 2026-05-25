@@ -1,48 +1,42 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Router } from "../shared/consts";
-import { Formik, type FormikHelpers } from "formik";
+import { Formik } from "formik";
 import { Button, Form, FloatingLabel } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { authActions } from "../features/model/auth/auth.slice";
+import { usePostLoginMutation } from "../features/model/auth/auth.api";
 import { useAppDispatch } from "../@redux/hooks";
-import { authActions } from "../features/api/auth.slice";
-import { postLogin } from "../features/api/auth";
-import { AxiosError } from "axios";
+import type { FormikHelpers } from "formik";
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const PageLogin = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [postLogin] = usePostLoginMutation();
 
   const initialValues = {
     username: "",
     password: "",
   };
 
-  const handleSubmit = (
+  const handleSubmit = async (
     values: typeof initialValues,
     { setFieldError }: FormikHelpers<typeof initialValues>,
   ) => {
-    return postLogin(values)
+    postLogin(values)
+      .unwrap()
       .then((response) => {
-        // setToken(JSON.stringify(response.data));
         dispatch(authActions.signIn(response));
         navigate(Router.ROOT);
       })
-      .catch((error) => {
-        if (!(error instanceof AxiosError)) {
-          return;
-        }
-
-        console.error(error);
-
-        if (error.message === "Network Error") {
-          toast.error("Ошибка сети");
-          return;
-        }
-
-        if (error.response?.data.statusCode === 401) {
+      .catch((error: FetchBaseQueryError) => {
+        if (error.status === 401) {
           setFieldError("username", "Неверное имя пользователя или пароль");
           setFieldError("password", "Неверное имя пользователя или пароль");
+          return;
         }
+
+        toast.error("Ошибка сети");
       });
   };
 

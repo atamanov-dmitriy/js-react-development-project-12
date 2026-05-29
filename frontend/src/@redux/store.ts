@@ -15,6 +15,7 @@ import { authReducer } from "../features/model/auth/auth.slice";
 import { authApi } from "../features/model/auth/auth.api";
 import { channelsApi } from "../features/model/channels/channels.api";
 import { channelsReducer } from "../features/model/channels/channels.slice";
+import { messagesApi } from "../features/model/messages/messages.api";
 
 const persistConfig = {
   key: "root",
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   channels: channelsReducer,
   [authApi.reducerPath]: authApi.reducer,
   [channelsApi.reducerPath]: channelsApi.reducer,
+  [messagesApi.reducerPath]: messagesApi.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -38,7 +40,11 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(authApi.middleware, channelsApi.middleware),
+    }).concat(
+      authApi.middleware,
+      channelsApi.middleware,
+      messagesApi.middleware,
+    ),
 });
 
 const persistor = persistStore(store);

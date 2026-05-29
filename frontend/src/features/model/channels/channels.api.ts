@@ -92,6 +92,7 @@ const channelsApi = createApi({
 
 const {
   useFetchChannelsQuery,
+  useLazyFetchChannelsQuery,
   usePostChannelMutation,
   usePatchChannelMutation,
   useDeleteChannelMutation,
@@ -100,6 +101,7 @@ const {
 export {
   channelsApi,
   useFetchChannelsQuery,
+  useLazyFetchChannelsQuery,
   usePostChannelMutation,
   usePatchChannelMutation,
   useDeleteChannelMutation,

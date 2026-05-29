@@ -1,8 +1,8 @@
 import { ChannelAdd } from "../features/view/channel-add";
 import { ChannelsList } from "../features/view/channels-list";
 import { ChannelInfo } from "../features/view/channel-info";
-import { Chat } from "../features/view/chat";
-import { SendMessageForm } from "../features/view/send-message-from";
+import { MessagesList } from "../features/view/messages-list";
+import { MessagesForm } from "../features/view/messages-from";
 
 const PageIndex = () => {
   return (
@@ -15,9 +15,9 @@ const PageIndex = () => {
         <div className="col p-0 h-100">
           <div className="d-flex flex-column h-100">
             <ChannelInfo />
-            <Chat />
+            <MessagesList />
             <div className="mt-auto px-5 py-3">
-              <SendMessageForm />
+              <MessagesForm />
             </div>
           </div>
         </div>

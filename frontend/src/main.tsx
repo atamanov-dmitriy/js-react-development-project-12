@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import App from "./app.tsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
+import Sockets from "./widgets/sockets.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -14,6 +15,7 @@ createRoot(document.getElementById("root")!).render(
       <PersistGate loading={null} persistor={persistor}>
         <App />
         <ToastContainer />
+        <Sockets />
       </PersistGate>
     </StoreProvider>
   </StrictMode>,

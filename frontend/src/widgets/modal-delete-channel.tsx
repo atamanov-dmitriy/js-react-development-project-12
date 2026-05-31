@@ -46,7 +46,7 @@ const ModalDeleteChannel = () => {
     }
 
     try {
-      await Promise.all([deleteChannel({ id }).unwrap(), ...deleteMessages()]);
+      await Promise.all([...deleteMessages(), deleteChannel({ id }).unwrap()]);
 
       closeModal();
       toast.success("Канал удалён");

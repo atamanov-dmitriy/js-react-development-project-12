@@ -1,10 +1,10 @@
 import { io, Socket } from "socket.io-client";
 import { useEffect, useRef } from "react";
-import { useLazyFetchChannelsQuery } from "../features/model/channels/channels.api";
+import { useLazyFetchMessagesQuery } from "../features/model/messages/messages.api";
 
 const Sockets = () => {
   const socketRef = useRef<Socket | null>(null);
-  const [fetchChannels] = useLazyFetchChannelsQuery();
+  const [fetchMessages] = useLazyFetchMessagesQuery();
 
   useEffect(() => {
     socketRef.current = io();
@@ -19,8 +19,8 @@ const Sockets = () => {
       console.error("❌ Socket connection error:", error.message);
     });
 
-    socket.on("newMessage", (data) => {
-      console.log("newMessage", data);
+    socket.on("newMessage", () => {
+      fetchMessages();
     });
 
     return () => {

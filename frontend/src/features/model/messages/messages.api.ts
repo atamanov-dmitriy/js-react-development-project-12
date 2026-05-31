@@ -82,6 +82,7 @@ const messagesApi = createApi({
 
 const {
   useFetchMessagesQuery,
+  useLazyFetchMessagesQuery,
   usePostMessageMutation,
   usePatchMessageMutation,
   useDeleteMessageMutation,
@@ -90,6 +91,7 @@ const {
 export {
   messagesApi,
   useFetchMessagesQuery,
+  useLazyFetchMessagesQuery,
   usePostMessageMutation,
   usePatchMessageMutation,
   useDeleteMessageMutation,

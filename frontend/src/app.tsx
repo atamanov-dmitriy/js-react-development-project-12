@@ -9,6 +9,7 @@ import { useAppSelector } from "./@redux/hooks";
 import { ModalAddChannel } from "./widgets/modal-add-channel";
 import { ModalRenameChannel } from "./widgets/modal-rename-channel";
 import { ModalDeleteChannel } from "./widgets/modal-delete-channel";
+import { PageSignUp } from "./pages/page-sign-up";
 
 const PrivateRouter: FC<PropsWithChildren> = ({ children }) => {
   const isAuthorized = useAppSelector((state) => state.auth.token) !== null;
@@ -21,20 +22,21 @@ const App = () => {
       <MainLayout>
         <Routes>
           <Route path={Router.LOGIN} element={<PageLogin />} />
+          <Route path={Router.SIGN_UP} element={<PageSignUp />} />
           <Route path={Router.NOT_FOUND} element={<PageNotFound />} />
           <Route
             path={Router.ROOT}
             element={
               <PrivateRouter>
                 <PageIndex />
+                <ModalAddChannel />
+                <ModalRenameChannel />
+                <ModalDeleteChannel />
               </PrivateRouter>
             }
           />
         </Routes>
       </MainLayout>
-      <ModalAddChannel />
-      <ModalRenameChannel />
-      <ModalDeleteChannel />
     </BrowserRouter>
   );
 };

@@ -1,6 +1,6 @@
 import { io, Socket } from "socket.io-client";
 import { useEffect, useRef } from "react";
-import { useLazyFetchMessagesQuery } from "../features/model/messages/messages.api";
+import { useLazyFetchMessagesQuery } from "./messages/messages.api";
 
 const Sockets = () => {
   const socketRef = useRef<Socket | null>(null);

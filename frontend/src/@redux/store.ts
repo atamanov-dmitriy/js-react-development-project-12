@@ -11,11 +11,11 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/es/storage";
-import { authReducer } from "../features/model/auth/auth.slice";
-import { authApi } from "../features/model/auth/auth.api";
-import { channelsApi } from "../features/model/channels/channels.api";
-import { channelsReducer } from "../features/model/channels/channels.slice";
-import { messagesApi } from "../features/model/messages/messages.api";
+import { authReducer } from "../model/auth/auth.slice";
+import { authApi } from "../model/auth/auth.api";
+import { channelsApi } from "../model/channels/channels.api";
+import { channelsReducer } from "../model/channels/channels.slice";
+import { messagesApi } from "../model/messages/messages.api";
 
 const persistConfig = {
   key: "root",

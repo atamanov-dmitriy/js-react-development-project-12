@@ -7,16 +7,42 @@ import { ToastContainer } from "react-toastify";
 import App from "./app.tsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
-import Sockets from "./widgets/sockets.tsx";
+import i18next from "i18next";
+import { I18nextProvider, initReactI18next } from "react-i18next";
+import Sockets from "./model/sockets.tsx";
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <StoreProvider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <App />
-        <ToastContainer />
-        <Sockets />
-      </PersistGate>
-    </StoreProvider>
-  </StrictMode>,
-);
+const init = async () => {
+  const i18n = i18next.createInstance();
+
+  await i18n.use(initReactI18next).init({
+    resources: {
+      ru: {
+        translation: {},
+      },
+      en: {
+        translation: {},
+      },
+    },
+    fallbackLng: "ru",
+    interpolation: {
+      escapeValue: false,
+    },
+    debug: false,
+  });
+
+  return createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <StoreProvider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <I18nextProvider i18n={i18n}>
+            <App />
+            <ToastContainer />
+            <Sockets />
+          </I18nextProvider>
+        </PersistGate>
+      </StoreProvider>
+    </StrictMode>,
+  );
+};
+
+init();

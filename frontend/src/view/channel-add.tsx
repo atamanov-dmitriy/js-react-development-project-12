@@ -1,4 +1,4 @@
-import { useAppDispatch } from "../../@redux/hooks";
+import { useAppDispatch } from "../@redux/hooks";
 import { channelsActions } from "../model/channels/channels.slice";
 
 const ChannelAdd = () => {

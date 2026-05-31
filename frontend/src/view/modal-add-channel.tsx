@@ -5,8 +5,8 @@ import type { FormikHelpers } from "formik";
 import {
   useFetchChannelsQuery,
   usePostChannelMutation,
-} from "../features/model/channels/channels.api";
-import { channelsActions } from "../features/model/channels/channels.slice";
+} from "../model/channels/channels.api";
+import { channelsActions } from "../model/channels/channels.slice";
 import { useAppSelector, useAppDispatch } from "../@redux/hooks";
 import { toast } from "react-toastify";
 

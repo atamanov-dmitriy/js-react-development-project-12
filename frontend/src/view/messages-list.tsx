@@ -1,4 +1,4 @@
-import { useAppSelector } from "../../@redux/hooks";
+import { useAppSelector } from "../@redux/hooks";
 import { useFetchMessagesQuery } from "../model/messages/messages.api";
 
 const MessagesList = () => {

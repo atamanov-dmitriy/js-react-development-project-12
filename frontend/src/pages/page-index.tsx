@@ -1,8 +1,8 @@
-import { ChannelAdd } from "../features/view/channel-add";
-import { ChannelsList } from "../features/view/channels-list";
-import { ChannelInfo } from "../features/view/channel-info";
-import { MessagesList } from "../features/view/messages-list";
-import { MessagesForm } from "../features/view/messages-from";
+import { ChannelAdd } from "../view/channel-add";
+import { ChannelsList } from "../view/channels-list";
+import { ChannelInfo } from "../view/channel-info";
+import { MessagesList } from "../view/messages-list";
+import { MessagesForm } from "../view/messages-from";
 
 const PageIndex = () => {
   return (

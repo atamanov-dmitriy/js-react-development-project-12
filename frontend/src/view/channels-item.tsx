@@ -2,7 +2,7 @@ import { ButtonGroup, Dropdown } from "react-bootstrap";
 import type { Channel } from "../model/channels/channels.types";
 import type { FC } from "react";
 import clsx from "clsx";
-import { useAppDispatch, useAppSelector } from "../../@redux/hooks";
+import { useAppDispatch, useAppSelector } from "../@redux/hooks";
 import { channelsActions } from "../model/channels/channels.slice";
 
 interface ChannelsRemovableItemProps {

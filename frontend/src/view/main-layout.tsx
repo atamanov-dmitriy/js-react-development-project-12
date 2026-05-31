@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Router } from "../shared/consts";
 import { Button, Container } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../@redux/hooks";
-import { authActions } from "../features/model/auth/auth.slice";
+import { authActions } from "../model/auth/auth.slice";
 
 const MainLayout: FC<PropsWithChildren> = ({ children }) => {
   const isAuthorized = useAppSelector((state) => state.auth.token) !== null;

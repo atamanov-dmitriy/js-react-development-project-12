@@ -2,14 +2,14 @@ import { Modal, Button } from "react-bootstrap";
 import {
   useDeleteChannelMutation,
   useLazyFetchChannelsQuery,
-} from "../features/model/channels/channels.api";
-import { channelsActions } from "../features/model/channels/channels.slice";
+} from "../model/channels/channels.api";
+import { channelsActions } from "../model/channels/channels.slice";
 import { useAppSelector, useAppDispatch } from "../@redux/hooks";
 import { toast } from "react-toastify";
 import {
   useDeleteMessageMutation,
   useFetchMessagesQuery,
-} from "../features/model/messages/messages.api";
+} from "../model/messages/messages.api";
 
 const ModalDeleteChannel = () => {
   const dispatch = useAppDispatch();

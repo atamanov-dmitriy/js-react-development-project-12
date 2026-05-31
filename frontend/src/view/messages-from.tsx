@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import { useAppSelector } from "../../@redux/hooks";
+import { useAppSelector } from "../@redux/hooks";
 import { toast } from "react-toastify";
 import type { FormikHelpers } from "formik";
 import { usePostMessageMutation } from "../model/messages/messages.api";

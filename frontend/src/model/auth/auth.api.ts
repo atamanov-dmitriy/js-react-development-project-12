@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { User } from "./auth.types";
-import { isHydrateAction } from "../../../@redux/utils";
+import { isHydrateAction } from "../../@redux/utils";
 
 const authApi = createApi({
   reducerPath: "auth-api",

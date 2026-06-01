@@ -30,7 +30,7 @@ const channelsApi = createApi({
         url: "api/v1/channels",
       }),
       async onQueryStarted(_, { dispatch, getState, queryFulfilled }) {
-        // Делаем первый чат (channel) активным
+        // Делаем активным первый чат (channel)
         const { data } = await queryFulfilled;
         const { selectedChannel } = (getState() as RootState).channels;
 

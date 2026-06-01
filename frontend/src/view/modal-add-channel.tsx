@@ -9,6 +9,7 @@ import {
 import { channelsActions } from "../model/channels/channels.slice";
 import { useAppSelector, useAppDispatch } from "../@redux/hooks";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const InputLength = {
   MIN: 3,
@@ -19,6 +20,7 @@ const ModalAddChannel = () => {
   const { data: channels } = useFetchChannelsQuery();
   const [postChannel] = usePostChannelMutation();
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const closeModal = () => {
     dispatch(channelsActions.setIsModalAddOpen(false));
@@ -31,16 +33,19 @@ const ModalAddChannel = () => {
   const validationSchema = yup.object({
     name: yup
       .string()
-      .required("Обязательное поле")
+      .required(t("page-index.addForm.required"))
       .test(
         "len",
-        `От ${InputLength.MIN} до ${InputLength.MAX} символов`,
+        t("page-index.addForm.minMax", {
+          min: InputLength.MIN,
+          max: InputLength.MAX,
+        }),
         (value) =>
           value.length >= InputLength.MIN && value.length <= InputLength.MAX,
       )
       .notOneOf(
         channels ? channels.map(({ name }) => name) : [],
-        "Должно быть уникальным",
+        t("page-index.addForm.notOneOf"),
       ),
   });
 
@@ -53,10 +58,10 @@ const ModalAddChannel = () => {
 
       dispatch(channelsActions.select(channel));
       closeModal();
-      toast.success("Канал создан");
+      toast.success(t("page-index.addForm.success"));
     } catch (error) {
       console.log(error);
-      setFieldError("name", "Ошибка сети");
+      setFieldError("name", t("page-index.addForm.errorNetwork"));
     }
   };
 
@@ -71,7 +76,7 @@ const ModalAddChannel = () => {
   return (
     <Modal show={isOpen} onHide={handleHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t("page-index.addForm.heading")}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -94,7 +99,7 @@ const ModalAddChannel = () => {
                 autoFocus
               />
               <Form.Label className="visually-hidden" htmlFor="name">
-                Имя канала
+                {t("page-index.addForm.label")}
               </Form.Label>
               <Form.Control.Feedback type="invalid">
                 {errors.name}
@@ -105,10 +110,10 @@ const ModalAddChannel = () => {
                   className="me-2"
                   onClick={handleCancel}
                 >
-                  Отменить
+                  {t("page-index.addForm.resetButton")}
                 </Button>
                 <Button type="submit" disabled={isSubmitting}>
-                  Отправить
+                  {t("page-index.addForm.submitButton")}
                 </Button>
               </div>
             </Form>

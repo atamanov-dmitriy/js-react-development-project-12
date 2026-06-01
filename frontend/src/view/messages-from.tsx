@@ -5,6 +5,7 @@ import type { FormikHelpers } from "formik";
 import { usePostMessageMutation } from "../model/messages/messages.api";
 import { Form, InputGroup } from "react-bootstrap";
 import { ArrowRightSquare } from "react-bootstrap-icons";
+import { useTranslation } from "react-i18next";
 
 const MessagesForm = () => {
   const channelId = useAppSelector(
@@ -17,6 +18,8 @@ const MessagesForm = () => {
     message: "",
   };
 
+  const { t } = useTranslation();
+
   const [postMessage] = usePostMessageMutation();
 
   const handleSubmit = async (
@@ -24,12 +27,12 @@ const MessagesForm = () => {
     { setFieldError, resetForm }: FormikHelpers<typeof initialValues>,
   ) => {
     if (!channelId) {
-      toast.error("Канал не найден");
+      toast.error(t("page-index.errorChannelNotFound"));
       return;
     }
 
     if (!username) {
-      toast.error("Пользователь не найден");
+      toast.error(t("page-index.errorUserNotFound"));
       return;
     }
 
@@ -43,7 +46,7 @@ const MessagesForm = () => {
       resetForm();
     } catch (error) {
       console.log(error);
-      setFieldError("name", "Ошибка сети");
+      setFieldError("name", t("page-index.errorNetwork"));
     }
   };
 
@@ -56,9 +59,6 @@ const MessagesForm = () => {
       >
         {({ values, isSubmitting, errors, handleChange, handleSubmit }) => (
           <Form className="py-1 border rounded-2" onSubmit={handleSubmit}>
-            <Form.Label className="visually-hidden" htmlFor="name">
-              Имя канала
-            </Form.Label>
             <Form.Control.Feedback type="invalid">
               {errors.message}
             </Form.Control.Feedback>
@@ -70,8 +70,8 @@ const MessagesForm = () => {
                 name="message"
                 onChange={handleChange}
                 autoFocus
-                aria-label="Новое сообщение"
-                placeholder="Введите сообщение..."
+                aria-label={t("page-index.messageAriaLabel")}
+                placeholder={t("page-index.messagePlaceholder")}
               />
               <button
                 type="submit"
@@ -79,7 +79,9 @@ const MessagesForm = () => {
                 disabled={values.message === "" || isSubmitting}
               >
                 <ArrowRightSquare size={20} />
-                <span className="visually-hidden">Отправить</span>
+                <span className="visually-hidden">
+                  {t("page-index.messageSubmit")}
+                </span>
               </button>
             </InputGroup>
           </Form>

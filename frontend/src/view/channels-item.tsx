@@ -4,6 +4,7 @@ import type { FC } from "react";
 import clsx from "clsx";
 import { useAppDispatch, useAppSelector } from "../@redux/hooks";
 import { channelsActions } from "../model/channels/channels.slice";
+import { useTranslation } from "react-i18next";
 
 interface ChannelsRemovableItemProps {
   channel: Channel;
@@ -18,6 +19,7 @@ const ChannelsItem: FC<ChannelsRemovableItemProps> = ({ channel }) => {
   const selectedChannel = useAppSelector(
     (state) => state.channels.selectedChannel,
   );
+  const { t } = useTranslation();
 
   const handleSelect = () => {
     dispatch(channelsActions.select(channel));
@@ -65,8 +67,12 @@ const ChannelsItem: FC<ChannelsRemovableItemProps> = ({ channel }) => {
         <span className="sr-only"></span>
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        <Dropdown.Item onClick={handleDelete}>{"Удалить"}</Dropdown.Item>
-        <Dropdown.Item onClick={handleRename}>{"Переименовать"}</Dropdown.Item>
+        <Dropdown.Item onClick={handleDelete}>
+          {t("page-index.channelsItemDelete")}
+        </Dropdown.Item>
+        <Dropdown.Item onClick={handleRename}>
+          {t("page-index.channelsItemRename")}
+        </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );

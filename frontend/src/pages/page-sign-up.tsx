@@ -9,51 +9,62 @@ import { useAppDispatch } from "../@redux/hooks";
 import type { FormikHelpers } from "formik";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import * as yup from "yup";
+import { useTranslation } from "react-i18next";
 
-const InputLength = {
+const UsernameLength = {
   MIN: 3,
   MAX: 20,
 };
 
-const validationSchema = yup.object({
-  username: yup
-    .string()
-    .test(
-      "len",
-      `От ${InputLength.MIN} до ${InputLength.MAX} символов`,
-      (value) =>
-        Boolean(
-          value &&
-          value.length >= InputLength.MIN &&
-          value.length <= InputLength.MAX,
-        ),
-    )
-    .matches(
-      /^[a-zA-Z0-9_]+$/,
-      "Имя пльзователя может содержать только буквы, цифры и подчеркивание",
-    )
-    .required("Обязательное поле"),
-
-  password: yup
-    .string()
-    .min(6, "Пароль должен содержать минимум 6 символов")
-    .required("Введите пароль"),
-
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref("password")], "Пароли не совпадают")
-    .required("Подтвердите пароль"),
-});
+const PasswordLength = {
+  MIN: 6,
+};
 
 const PageSignUp = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [postSignup] = usePostSignupMutation();
+  const { t } = useTranslation();
+
+  const validationSchema = yup.object({
+    username: yup
+      .string()
+      .test(
+        "len",
+        t("page-sing-up.usernameMinMax", {
+          min: UsernameLength.MIN,
+          max: UsernameLength.MAX,
+        }),
+        (value) =>
+          Boolean(
+            value &&
+            value.length >= UsernameLength.MIN &&
+            value.length <= UsernameLength.MAX,
+          ),
+      )
+      .matches(/^[a-zA-Z0-9_]+$/, t("page-sing-up.usernameMatches"))
+      .required("page-sing-up.usernameRequired"),
+
+    password: yup
+      .string()
+      .min(
+        PasswordLength.MIN,
+        t("page-sing-up.passwordMinMax", {
+          min: PasswordLength.MIN,
+        }),
+      )
+      .required(t("page-sing-up.passwordRequired")),
+
+    confirm: yup
+      .string()
+      .oneOf([yup.ref("password")], t("page-sing-up.confirmOneOf"))
+      .required(t("page-sing-up.confirmRequired")),
+  });
 
   const initialValues = {
     username: "",
     password: "",
-    confirmPassword: "",
+    confirm: "",
   };
 
   const handleSubmit = async (
@@ -68,18 +79,11 @@ const PageSignUp = () => {
       })
       .catch((error: FetchBaseQueryError) => {
         if (error.status === 409) {
-          setFieldError(
-            "username",
-            "Пользователь с таким именем уже существует",
-          );
-          setFieldError(
-            "password",
-            "Пользователь с таким именем уже существует",
-          );
+          setFieldError("username", t("page-sing-up.error409"));
           return;
         }
 
-        toast.error("Ошибка сети");
+        toast.error(t("page-sing-up.errorNetwork"));
       });
   };
 
@@ -90,7 +94,10 @@ const PageSignUp = () => {
           <div className="card shadow-sm">
             <div className="card-body row p-5">
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                <img src="/public/avatar_1-D7Cot-zE.jpg" alt="Войти" />
+                <img
+                  src="/public/avatar_1-D7Cot-zE.jpg"
+                  alt={t("page-sing-up.heading")}
+                />
               </div>
               <Formik
                 initialValues={initialValues}
@@ -109,12 +116,17 @@ const PageSignUp = () => {
                     onSubmit={handleSubmit}
                     className="col-12 col-md-6 mt-3 mt-md-0"
                   >
-                    <h1 className="text-center mb-4">Регистрация</h1>
-                    <FloatingLabel className="mb-3" label="Ваш ник">
+                    <h1 className="text-center mb-4">
+                      {t("page-sing-up.heading")}
+                    </h1>
+                    <FloatingLabel
+                      className="mb-3"
+                      label={t("page-sing-up.usernameLabel")}
+                    >
                       <Form.Control
                         id="username"
-                        placeholder="Ваш ник"
-                        autoComplete="username"
+                        placeholder={t("page-sing-up.usernameLabel")}
+                        autoComplete="off"
                         value={values.username}
                         name="username"
                         onChange={handleChange}
@@ -124,11 +136,14 @@ const PageSignUp = () => {
                         {errors.username}
                       </Form.Control.Feedback>
                     </FloatingLabel>
-                    <FloatingLabel className="mb-4" label="Пароль">
+                    <FloatingLabel
+                      className="mb-4"
+                      label={t("page-sing-up.passwordLabel")}
+                    >
                       <Form.Control
                         id="password"
-                        placeholder="Пароль"
-                        autoComplete="current-password"
+                        placeholder={t("page-sing-up.passwordLabel")}
+                        autoComplete="off"
                         value={values.password}
                         name="password"
                         onChange={handleChange}
@@ -139,19 +154,22 @@ const PageSignUp = () => {
                         {errors.password}
                       </Form.Control.Feedback>
                     </FloatingLabel>
-                    <FloatingLabel className="mb-4" label="Пароль">
+                    <FloatingLabel
+                      className="mb-4"
+                      label={t("page-sing-up.confirmLabel")}
+                    >
                       <Form.Control
-                        id="confirmPassword"
-                        placeholder="Подтвердите пароль"
-                        autoComplete="current-password"
-                        value={values.confirmPassword}
-                        name="confirmPassword"
+                        id="confirm"
+                        placeholder={t("page-sing-up.confirmLabel")}
+                        autoComplete="off"
+                        value={values.confirm}
+                        name="confirm"
                         onChange={handleChange}
                         type="password"
-                        isInvalid={!!errors.confirmPassword}
+                        isInvalid={!!errors.confirm}
                       />
                       <Form.Control.Feedback tooltip type="invalid">
-                        {errors.confirmPassword}
+                        {errors.confirm}
                       </Form.Control.Feedback>
                     </FloatingLabel>
                     <Button
@@ -160,7 +178,7 @@ const PageSignUp = () => {
                       className="w-100 mb-3"
                       disabled={isSubmitting}
                     >
-                      Зарегистрироваться
+                      {t("page-sing-up.submitButton")}
                     </Button>
                   </Form>
                 )}

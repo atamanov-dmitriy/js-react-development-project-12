@@ -9,6 +9,7 @@ import {
 import { channelsActions } from "../model/channels/channels.slice";
 import { useAppSelector, useAppDispatch } from "../@redux/hooks";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const InputLength = {
   MIN: 3,
@@ -19,6 +20,7 @@ const ModalRenameChannel = () => {
   const { data: channels } = useFetchChannelsQuery();
   const [patchChannel] = usePatchChannelMutation();
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const closeModal = () => {
     dispatch(
@@ -35,16 +37,19 @@ const ModalRenameChannel = () => {
   const validationSchema = yup.object({
     name: yup
       .string()
-      .required("Обязательное поле")
+      .required(t("page-index.renameForm.required"))
       .test(
         "len",
-        `От ${InputLength.MIN} до ${InputLength.MAX} символов`,
+        t("page-index.renameForm.minMax", {
+          min: InputLength.MIN,
+          max: InputLength.MAX,
+        }),
         (value) =>
           value.length >= InputLength.MIN && value.length <= InputLength.MAX,
       )
       .notOneOf(
         channels ? channels.map(({ name }) => name) : [],
-        "Должно быть уникальным",
+        t("page-index.renameForm.notOneOf"),
       ),
   });
 
@@ -53,7 +58,7 @@ const ModalRenameChannel = () => {
     { setFieldError }: FormikHelpers<typeof initialValues>,
   ) => {
     if (channel === null) {
-      setFieldError("name", "Канал не найден");
+      setFieldError("name", t("page-index.renameForm.errorChannelNotFound"));
       return;
     }
 
@@ -62,10 +67,10 @@ const ModalRenameChannel = () => {
 
       dispatch(channelsActions.select(response));
       closeModal();
-      toast.success("Канал переименован");
+      toast.success(t("page-index.renameForm.success"));
     } catch (error) {
       console.log(error);
-      setFieldError("name", "Ошибка сети");
+      setFieldError("name", t("page-index.renameForm.errorNetwork"));
     }
   };
 
@@ -80,7 +85,7 @@ const ModalRenameChannel = () => {
   return (
     <Modal show={isOpen} onHide={handleHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t("page-index.renameForm.heading")}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -103,7 +108,7 @@ const ModalRenameChannel = () => {
                 autoFocus
               />
               <Form.Label className="visually-hidden" htmlFor="name">
-                Имя канала
+                {t("page-index.renameForm.label")}
               </Form.Label>
               <Form.Control.Feedback type="invalid">
                 {errors.name}
@@ -114,10 +119,10 @@ const ModalRenameChannel = () => {
                   className="me-2"
                   onClick={handleCancel}
                 >
-                  Отменить
+                  {t("page-index.renameForm.resetButton")}
                 </Button>
                 <Button type="submit" disabled={isSubmitting}>
-                  Отправить
+                  {t("page-index.renameForm.submitButton")}
                 </Button>
               </div>
             </Form>

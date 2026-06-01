@@ -10,18 +10,14 @@ import "react-toastify/dist/ReactToastify.css";
 import i18next from "i18next";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import Sockets from "./model/sockets.tsx";
+import { ru } from "./@i18next/ru.ts";
 
 const init = async () => {
   const i18n = i18next.createInstance();
 
   await i18n.use(initReactI18next).init({
     resources: {
-      ru: {
-        translation: {},
-      },
-      en: {
-        translation: {},
-      },
+      ru,
     },
     fallbackLng: "ru",
     interpolation: {

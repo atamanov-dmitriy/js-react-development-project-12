@@ -8,11 +8,13 @@ import { usePostLoginMutation } from "../model/auth/auth.api";
 import { useAppDispatch } from "../@redux/hooks";
 import type { FormikHelpers } from "formik";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { useTranslation } from "react-i18next";
 
 const PageLogin = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [postLogin] = usePostLoginMutation();
+  const { t } = useTranslation();
 
   const initialValues = {
     username: "",
@@ -31,12 +33,12 @@ const PageLogin = () => {
       })
       .catch((error: FetchBaseQueryError) => {
         if (error.status === 401) {
-          setFieldError("username", "Неверное имя пользователя или пароль");
-          setFieldError("password", "Неверное имя пользователя или пароль");
+          setFieldError("username", t("page-login.error401"));
+          setFieldError("password", t("page-login.error401"));
           return;
         }
 
-        toast.error("Ошибка сети");
+        toast.error(t("page-login.errorNetwork"));
       });
   };
 
@@ -50,7 +52,7 @@ const PageLogin = () => {
                 <img
                   src="/public/avatar-DIE1AEpS.jpg"
                   className="rounded-circle"
-                  alt="Войти"
+                  alt={t("page-login.heading")}
                 />
               </div>
               <Formik initialValues={initialValues} onSubmit={handleSubmit}>
@@ -65,11 +67,16 @@ const PageLogin = () => {
                     onSubmit={handleSubmit}
                     className="col-12 col-md-6 mt-3 mt-md-0"
                   >
-                    <h1 className="text-center mb-4">Войти</h1>
-                    <FloatingLabel className="mb-3" label="Ваш ник">
+                    <h1 className="text-center mb-4">
+                      {t("page-login.heading")}
+                    </h1>
+                    <FloatingLabel
+                      className="mb-3"
+                      label={t("page-login.usernameLabel")}
+                    >
                       <Form.Control
                         id="username"
-                        placeholder="Ваш ник"
+                        placeholder={t("page-login.usernameLabel")}
                         autoComplete="username"
                         value={values.username}
                         name="username"
@@ -77,10 +84,13 @@ const PageLogin = () => {
                         isInvalid={!!errors.username}
                       />
                     </FloatingLabel>
-                    <FloatingLabel className="mb-4" label="Пароль">
+                    <FloatingLabel
+                      className="mb-4"
+                      label={t("page-login.passwordLabel")}
+                    >
                       <Form.Control
                         id="password"
-                        placeholder="Пароль"
+                        placeholder={t("page-login.passwordLabel")}
                         autoComplete="current-password"
                         value={values.password}
                         name="password"
@@ -98,7 +108,7 @@ const PageLogin = () => {
                       className="w-100 mb-3"
                       disabled={isSubmitting}
                     >
-                      Войти
+                      {t("page-login.submitButton")}
                     </Button>
                   </Form>
                 )}
@@ -106,8 +116,8 @@ const PageLogin = () => {
             </div>
             <div className="card-footer p-4">
               <div className="text-center">
-                <span>Нет аккаунта?</span>{" "}
-                <Link to={Router.SIGN_UP}>Регистрация</Link>
+                <span>{t("page-login.footerSpan")}</span>{" "}
+                <Link to={Router.SIGN_UP}>{t("page-login.footerLink")}</Link>
               </div>
             </div>
           </div>

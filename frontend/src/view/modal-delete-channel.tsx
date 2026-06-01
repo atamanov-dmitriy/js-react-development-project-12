@@ -10,6 +10,7 @@ import {
   useDeleteMessageMutation,
   useFetchMessagesQuery,
 } from "../model/messages/messages.api";
+import { useTranslation } from "react-i18next";
 
 const ModalDeleteChannel = () => {
   const dispatch = useAppDispatch();
@@ -18,6 +19,7 @@ const ModalDeleteChannel = () => {
   const [deleteChannel] = useDeleteChannelMutation();
   const { data: messages } = useFetchMessagesQuery();
   const [deleteMessage] = useDeleteMessageMutation();
+  const { t } = useTranslation();
 
   const { id, isOpen } = useAppSelector(
     (state) => state.channels.modalDeleteOpen,
@@ -41,7 +43,7 @@ const ModalDeleteChannel = () => {
 
   const handleDelete = async () => {
     if (id === null) {
-      toast.error("Неверный id канала");
+      toast.error(t("page-index.deleteForm.errorIdNotFound"));
       return;
     }
 
@@ -49,7 +51,7 @@ const ModalDeleteChannel = () => {
       await Promise.all([...deleteMessages(), deleteChannel({ id }).unwrap()]);
 
       closeModal();
-      toast.success("Канал удалён");
+      toast.success(t("page-index.deleteForm.success"));
 
       if (id !== selectedChannel?.id) {
         return;
@@ -61,7 +63,7 @@ const ModalDeleteChannel = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Ошибка сети");
+      toast.error(t("page-index.deleteForm.errorNetwork"));
     }
   };
 
@@ -76,14 +78,14 @@ const ModalDeleteChannel = () => {
   return (
     <Modal show={isOpen} onHide={handleHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Удалить канал</Modal.Title>
+        <Modal.Title>{t("page-index.deleteForm.heading")}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
-        <p className="lead">Уверены?</p>
+        <p className="lead">{t("page-index.deleteForm.lead")}</p>
         <div className="d-flex justify-content-end">
           <Button variant="secondary" className="me-2" onClick={handleCancel}>
-            Отменить
+            {t("page-index.deleteForm.resetButton")}
           </Button>
           <Button
             variant="danger"
@@ -91,7 +93,7 @@ const ModalDeleteChannel = () => {
             disabled={false}
             onClick={handleDelete}
           >
-            Удалить
+            {t("page-index.deleteForm.submitButton")}
           </Button>
         </div>
       </Modal.Body>

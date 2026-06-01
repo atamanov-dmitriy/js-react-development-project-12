@@ -10,6 +10,7 @@ import { channelsActions } from "../model/channels/channels.slice";
 import { useAppSelector, useAppDispatch } from "../@redux/hooks";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import filter from "leo-profanity";
 
 const InputLength = {
   MIN: 3,
@@ -50,9 +51,11 @@ const ModalAddChannel = () => {
   });
 
   const handleSubmit = async (
-    { name }: typeof initialValues,
+    values: typeof initialValues,
     { setFieldError }: FormikHelpers<typeof initialValues>,
   ) => {
+    const name = filter.clean(values.name);
+
     try {
       const channel = await postChannel({ name }).unwrap();
 

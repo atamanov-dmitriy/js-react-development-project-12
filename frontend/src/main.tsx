@@ -11,8 +11,11 @@ import i18next from "i18next";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import Sockets from "./model/sockets.tsx";
 import { ru } from "./@i18next/ru.ts";
+import filter from "leo-profanity";
 
 const init = async () => {
+  filter.loadDictionary("ru");
+
   const i18n = i18next.createInstance();
 
   await i18n.use(initReactI18next).init({

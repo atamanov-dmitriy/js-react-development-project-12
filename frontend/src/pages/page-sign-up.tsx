@@ -36,29 +36,31 @@ const PageSignUp = () => {
           max: UsernameLength.MAX,
         }),
         (value) =>
-          Boolean(
+          !!(
             value &&
             value.length >= UsernameLength.MIN &&
-            value.length <= UsernameLength.MAX,
+            value.length <= UsernameLength.MAX
           ),
       )
-      .matches(/^[a-zA-Z0-9_]+$/, t("page-sing-up.usernameMatches"))
-      .required("page-sing-up.usernameRequired"),
+      .matches(/^[a-zA-Z0-9_]+$/, t("page-sing-up.usernameMatches")),
 
-    password: yup
-      .string()
-      .min(
-        PasswordLength.MIN,
-        t("page-sing-up.passwordMinMax", {
-          min: PasswordLength.MIN,
-        }),
-      )
-      .required(t("page-sing-up.passwordRequired")),
+    password: yup.string().test(
+      "len",
+      t("page-sing-up.passwordMinMax", {
+        min: PasswordLength.MIN,
+      }),
+      (value) => !!(value && value.length >= PasswordLength.MIN),
+    ),
 
     confirm: yup
       .string()
-      .oneOf([yup.ref("password")], t("page-sing-up.confirmOneOf"))
-      .required(t("page-sing-up.confirmRequired")),
+      .test(
+        "passwords-match",
+        t("page-sing-up.confirmOneOf"),
+        function (value) {
+          return !!(value && this.parent.password === value);
+        },
+      ),
   });
 
   const initialValues = {
@@ -120,29 +122,35 @@ const PageSignUp = () => {
                       {t("page-sing-up.heading")}
                     </h1>
                     <FloatingLabel
+                      controlId="username"
                       className="mb-3"
                       label={t("page-sing-up.usernameLabel")}
                     >
                       <Form.Control
-                        id="username"
-                        placeholder={t("page-sing-up.usernameLabel")}
+                        placeholder={t("page-sing-up.usernameMinMax", {
+                          min: UsernameLength.MIN,
+                          max: UsernameLength.MAX,
+                        })}
                         autoComplete="off"
                         value={values.username}
                         name="username"
                         onChange={handleChange}
                         isInvalid={!!errors.username}
+                        autoFocus
                       />
                       <Form.Control.Feedback tooltip type="invalid">
                         {errors.username}
                       </Form.Control.Feedback>
                     </FloatingLabel>
                     <FloatingLabel
+                      controlId="password"
                       className="mb-4"
                       label={t("page-sing-up.passwordLabel")}
                     >
                       <Form.Control
-                        id="password"
-                        placeholder={t("page-sing-up.passwordLabel")}
+                        placeholder={t("page-sing-up.passwordMinMax", {
+                          min: PasswordLength.MIN,
+                        })}
                         autoComplete="off"
                         value={values.password}
                         name="password"
@@ -155,12 +163,12 @@ const PageSignUp = () => {
                       </Form.Control.Feedback>
                     </FloatingLabel>
                     <FloatingLabel
+                      controlId="confirm"
                       className="mb-4"
                       label={t("page-sing-up.confirmLabel")}
                     >
                       <Form.Control
-                        id="confirm"
-                        placeholder={t("page-sing-up.confirmLabel")}
+                        placeholder={t("page-sing-up.confirmOneOf")}
                         autoComplete="off"
                         value={values.confirm}
                         name="confirm"

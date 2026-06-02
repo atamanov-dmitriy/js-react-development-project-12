@@ -6,7 +6,7 @@ import { usePostMessageMutation } from "../model/messages/messages.api";
 import { Form, InputGroup } from "react-bootstrap";
 import { ArrowRightSquare } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
-import filter from "leo-profanity";
+import leoProfanity from "leo-profanity";
 
 const MessagesForm = () => {
   const channelId = useAppSelector(
@@ -37,7 +37,7 @@ const MessagesForm = () => {
       return;
     }
 
-    const body = filter.clean(message);
+    const body = leoProfanity.clean(message);
     try {
       await postMessage({
         body,

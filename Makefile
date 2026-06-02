@@ -14,5 +14,8 @@ start-backend:
 start-frontend:
 	make -C frontend start
 
+start:
+	make start-backend
+
 develop:
 	make start-backend & make start-frontend

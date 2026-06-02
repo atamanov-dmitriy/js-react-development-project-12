@@ -11,6 +11,7 @@ const ru = {
         count_few: "{{count}} сообщения",
         count_many: "{{count}} сообщений",
       },
+      channelsItemMenu: "Управление каналом",
       channelsItemDelete: "Удалить",
       channelsItemRename: "Переименовать",
 
@@ -68,18 +69,15 @@ const ru = {
       usernameMinMax: "От {{min}} до {{max}} символов",
       usernameMatches:
         "Имя пльзователя может содержать только буквы, цифры и подчеркивание",
-      usernameRequired: "Обязательное поле",
 
       passwordLabel: "Пароль",
-      passwordMinMax: "Пароль должен содержать минимум {{min}} символов",
-      passwordRequired: "Введите пароль",
-
-      error409: "Пользователь с таким именем уже существует",
-      errorNetwork: "Ошибка сети",
+      passwordMinMax: "Не менее {{min}} символов",
 
       confirmLabel: "Подтвердите пароль",
-      confirmOneOf: "Пароли не совпадают",
-      confirmRequired: "Подтвердите пароль",
+      confirmOneOf: "Пароли должны совпадать",
+
+      error409: "Такой пользователь уже существует",
+      errorNetwork: "Ошибка сети",
 
       heading: "Регистрация",
       submitButton: "Зарегистрироваться",
@@ -88,7 +86,7 @@ const ru = {
       usernameLabel: "Ваш ник",
       passwordLabel: "Пароль",
 
-      error401: "Неверное имя пользователя или пароль",
+      error401: "Неверные имя пользователя или пароль",
       errorNetwork: "Ошибка сети",
 
       heading: "Войти",

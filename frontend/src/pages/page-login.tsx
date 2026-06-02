@@ -71,11 +71,11 @@ const PageLogin = () => {
                       {t("page-login.heading")}
                     </h1>
                     <FloatingLabel
+                      controlId="username"
                       className="mb-3"
                       label={t("page-login.usernameLabel")}
                     >
                       <Form.Control
-                        id="username"
                         placeholder={t("page-login.usernameLabel")}
                         autoComplete="username"
                         value={values.username}
@@ -85,11 +85,11 @@ const PageLogin = () => {
                       />
                     </FloatingLabel>
                     <FloatingLabel
+                      controlId="password"
                       className="mb-4"
                       label={t("page-login.passwordLabel")}
                     >
                       <Form.Control
-                        id="password"
                         placeholder={t("page-login.passwordLabel")}
                         autoComplete="current-password"
                         value={values.password}

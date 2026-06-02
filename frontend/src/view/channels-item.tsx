@@ -64,7 +64,9 @@ const ChannelsItem: FC<ChannelsRemovableItemProps> = ({ channel }) => {
         variant={isSelected ? "secondary" : "light"}
         aria-label={"channelManagement"}
       >
-        <span className="sr-only"></span>
+        <span className="visually-hidden">
+          {t("page-index.channelsItemMenu")}
+        </span>
       </Dropdown.Toggle>
       <Dropdown.Menu>
         <Dropdown.Item onClick={handleDelete}>

@@ -9,7 +9,7 @@ interface Message {
 
 type PostQueryArg = Omit<Message, "id">;
 
-type PatchQueryArg = Pick<Message, "id", "body">;
+type PatchQueryArg = Pick<Message, "id" | "body">;
 
 type DeleteQueryArg = Pick<Message, "id">;
 

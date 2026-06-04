@@ -1,70 +1,55 @@
 import { Formik } from "formik";
 import { Modal, Button, Form } from "react-bootstrap";
-import * as yup from "yup";
 import type { FormikHelpers } from "formik";
 import {
   useFetchChannelsQuery,
-  usePostChannelMutation,
-} from "../model/channels/channels.api";
-import { channelsActions } from "../model/channels/channels.slice";
-import { useAppSelector, useAppDispatch } from "../@redux/hooks";
+  usePatchChannelMutation,
+} from "../../model/channels/channels.api";
+import { channelsActions } from "../../model/channels/channels.slice";
+import { useAppSelector, useAppDispatch } from "../../@redux/hooks";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import leoProfanity from "leo-profanity";
+import { createValidationSchema } from "./modal-rename-channel.schema";
 
-const InputLength = {
-  MIN: 3,
-  MAX: 20,
-};
-
-const ModalAddChannel = () => {
+const ModalRenameChannel = () => {
   const { data: channels } = useFetchChannelsQuery();
-  const [postChannel] = usePostChannelMutation();
+  const [patchChannel] = usePatchChannelMutation();
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
+  const validationSchema = createValidationSchema(t, channels);
 
   const closeModal = () => {
-    dispatch(channelsActions.setIsModalAddOpen(false));
+    dispatch(
+      channelsActions.setIsModalRenameOpen({ isOpen: false, channel: null }),
+    );
   };
 
-  const { isOpen } = useAppSelector((state) => state.channels.modalAddOpen);
+  const { channel, isOpen } = useAppSelector(
+    (state) => state.channels.modalRenameOpen,
+  );
 
-  const initialValues = { name: "" };
-
-  const validationSchema = yup.object({
-    name: yup
-      .string()
-      .required(t("page-index.addForm.required"))
-      .test(
-        "len",
-        t("page-index.addForm.minMax", {
-          min: InputLength.MIN,
-          max: InputLength.MAX,
-        }),
-        (value) =>
-          value.length >= InputLength.MIN && value.length <= InputLength.MAX,
-      )
-      .notOneOf(
-        channels ? channels.map(({ name }) => name) : [],
-        t("page-index.addForm.notOneOf"),
-      ),
-  });
+  const initialValues = { name: channel?.name ?? "" };
 
   const handleSubmit = async (
     values: typeof initialValues,
     { setFieldError }: FormikHelpers<typeof initialValues>,
   ) => {
-    const name = leoProfanity.clean(values.name);
+    if (channel === null) {
+      setFieldError("name", t("page-index.renameForm.errorChannelNotFound"));
+      return;
+    }
 
     try {
-      const channel = await postChannel({ name }).unwrap();
+      const name = leoProfanity.clean(values.name);
+      const response = await patchChannel({ name, id: channel.id }).unwrap();
 
-      dispatch(channelsActions.select(channel));
+      dispatch(channelsActions.select(response));
       closeModal();
-      toast.success(t("page-index.addForm.success"));
+      toast.success(t("page-index.renameForm.success"));
     } catch (error) {
       console.log(error);
-      setFieldError("name", t("page-index.addForm.errorNetwork"));
+      setFieldError("name", t("page-index.renameForm.errorNetwork"));
     }
   };
 
@@ -79,7 +64,7 @@ const ModalAddChannel = () => {
   return (
     <Modal show={isOpen} onHide={handleHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>{t("page-index.addForm.heading")}</Modal.Title>
+        <Modal.Title>{t("page-index.renameForm.heading")}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -102,7 +87,7 @@ const ModalAddChannel = () => {
                 autoFocus
               />
               <Form.Label className="visually-hidden" htmlFor="name">
-                {t("page-index.addForm.label")}
+                {t("page-index.renameForm.label")}
               </Form.Label>
               <Form.Control.Feedback type="invalid">
                 {errors.name}
@@ -113,10 +98,10 @@ const ModalAddChannel = () => {
                   className="me-2"
                   onClick={handleCancel}
                 >
-                  {t("page-index.addForm.resetButton")}
+                  {t("page-index.renameForm.resetButton")}
                 </Button>
                 <Button type="submit" disabled={isSubmitting}>
-                  {t("page-index.addForm.submitButton")}
+                  {t("page-index.renameForm.submitButton")}
                 </Button>
               </div>
             </Form>
@@ -127,4 +112,4 @@ const ModalAddChannel = () => {
   );
 };
 
-export { ModalAddChannel };
+export { ModalRenameChannel };

@@ -1,7 +1,7 @@
 const Router = {
   ROOT: "/",
   LOGIN: "/login",
-  SIGN_UP: "/signup",
+  SIGNUP: "/signup",
   NOT_FOUND: "*",
 } as const;
 

@@ -117,7 +117,7 @@ const PageLogin = () => {
             <div className="card-footer p-4">
               <div className="text-center">
                 <span>{t("page-login.footerSpan")}</span>{" "}
-                <Link to={Router.SIGN_UP}>{t("page-login.footerLink")}</Link>
+                <Link to={Router.SIGNUP}>{t("page-login.footerLink")}</Link>
               </div>
             </div>
           </div>

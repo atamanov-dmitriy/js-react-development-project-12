@@ -76,22 +76,22 @@ const ModalRenameChannel = () => {
         >
           {({ values, isSubmitting, errors, handleChange, handleSubmit }) => (
             <Form onSubmit={handleSubmit}>
-              <Form.Control
-                className="mb-2"
-                id="name"
-                autoComplete="off"
-                value={values.name}
-                name="name"
-                onChange={handleChange}
-                isInvalid={!!errors.name}
-                autoFocus
-              />
-              <Form.Label className="visually-hidden" htmlFor="name">
-                {t("page-index.renameForm.label")}
-              </Form.Label>
-              <Form.Control.Feedback type="invalid">
-                {errors.name}
-              </Form.Control.Feedback>
+              <Form.Group controlId="name" className="position-relative mb-2">
+                <Form.Control
+                  autoComplete="off"
+                  value={values.name}
+                  name="name"
+                  onChange={handleChange}
+                  isInvalid={!!errors.name}
+                  autoFocus
+                />
+                <Form.Label className="visually-hidden">
+                  {t("page-index.renameForm.label")}
+                </Form.Label>
+                <Form.Control.Feedback type="invalid">
+                  {errors.name}
+                </Form.Control.Feedback>
+              </Form.Group>
               <div className="d-flex justify-content-end">
                 <Button
                   variant="secondary"

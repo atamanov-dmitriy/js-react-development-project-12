@@ -16,7 +16,7 @@ const createValidationSchema = (t: TFunction<"translation", undefined>) =>
       .string()
       .test(
         "len",
-        t("page-singup.usernameMinMax", {
+        t("page-login.usernameMinMax", {
           min: UsernameLength.MIN,
           max: UsernameLength.MAX,
         }),
@@ -27,21 +27,15 @@ const createValidationSchema = (t: TFunction<"translation", undefined>) =>
             value.length <= UsernameLength.MAX
           ),
       )
-      .matches(/^[a-zA-Z0-9_]+$/, t("page-singup.usernameMatches")),
+      .matches(/^[a-zA-Z0-9_]+$/, t("page-login.usernameMatches")),
 
     password: yup.string().test(
       "len",
-      t("page-singup.passwordMinMax", {
+      t("page-login.passwordMinMax", {
         min: PasswordLength.MIN,
       }),
       (value) => !!(value && value.length >= PasswordLength.MIN),
     ),
-
-    confirm: yup
-      .string()
-      .test("passwords-match", t("page-singup.confirmOneOf"), function (value) {
-        return !!(value && this.parent.password === value);
-      }),
   });
 
-export { UsernameLength, PasswordLength, createValidationSchema };
+export { createValidationSchema };

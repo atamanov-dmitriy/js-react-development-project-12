@@ -64,7 +64,7 @@ const ru = {
         resetButton: "Отменить",
       },
     },
-    "page-sing-up": {
+    "page-singup": {
       usernameLabel: "Имя пользователя",
       usernameMinMax: "От {{min}} до {{max}} символов",
       usernameMatches:
@@ -84,7 +84,12 @@ const ru = {
     },
     "page-login": {
       usernameLabel: "Ваш ник",
+      usernameMinMax: "От {{min}} до {{max}} символов",
+      usernameMatches:
+        "Имя пльзователя может содержать только буквы, цифры и подчеркивание",
+
       passwordLabel: "Пароль",
+      passwordMinMax: "Не менее {{min}} символов",
 
       error401: "Неверные имя пользователя или пароль",
       errorNetwork: "Ошибка сети",

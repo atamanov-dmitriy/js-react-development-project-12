@@ -13,7 +13,7 @@ const PageSignUp = () => {
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
                 <img
                   src="/public/avatar_1-D7Cot-zE.jpg"
-                  alt={t("page-sing-up.heading")}
+                  alt={t("page-singup.heading")}
                 />
               </div>
               <SignupForm />

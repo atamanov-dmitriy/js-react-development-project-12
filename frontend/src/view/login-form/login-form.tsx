@@ -4,47 +4,43 @@ import { Formik } from "formik";
 import { Button, Form, FloatingLabel } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { authActions } from "../../model/auth/auth.slice";
-import { usePostSignupMutation } from "../../model/auth/auth.api";
+import { usePostLoginMutation } from "../../model/auth/auth.api";
 import { useAppDispatch } from "../../@redux/hooks";
 import type { FormikHelpers } from "formik";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useTranslation } from "react-i18next";
-import {
-  PasswordLength,
-  UsernameLength,
-  createValidationSchema,
-} from "./signup-form.schema";
+import { createValidationSchema } from "./login-form.schema";
 
-const SignupForm = () => {
+const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [postSignup] = usePostSignupMutation();
+  const [postLogin] = usePostLoginMutation();
   const { t } = useTranslation();
   const validationSchema = createValidationSchema(t);
 
   const initialValues = {
     username: "",
     password: "",
-    confirm: "",
   };
 
   const handleSubmit = async (
     values: typeof initialValues,
     { setFieldError }: FormikHelpers<typeof initialValues>,
   ) => {
-    postSignup(values)
+    postLogin(values)
       .unwrap()
       .then((response) => {
         dispatch(authActions.signIn(response));
         navigate(Router.ROOT);
       })
       .catch((error: FetchBaseQueryError) => {
-        if (error.status === 409) {
-          setFieldError("username", t("page-singup.error409"));
+        if (error.status === 401) {
+          setFieldError("username", t("page-login.error401"));
+          setFieldError("password", t("page-login.error401"));
           return;
         }
 
-        toast.error(t("page-singup.errorNetwork"));
+        toast.error(t("page-login.errorNetwork"));
       });
   };
 
@@ -57,23 +53,19 @@ const SignupForm = () => {
     >
       {({ values, isSubmitting, errors, handleChange, handleSubmit }) => (
         <Form onSubmit={handleSubmit} className="col-12 col-md-6 mt-3 mt-md-0">
-          <h1 className="text-center mb-4">{t("page-singup.heading")}</h1>
+          <h1 className="text-center mb-4">{t("page-login.heading")}</h1>
           <FloatingLabel
             controlId="username"
             className="mb-3"
-            label={t("page-singup.usernameLabel")}
+            label={t("page-login.usernameLabel")}
           >
             <Form.Control
-              placeholder={t("page-singup.usernameMinMax", {
-                min: UsernameLength.MIN,
-                max: UsernameLength.MAX,
-              })}
+              placeholder={t("page-login.usernameLabel")}
               autoComplete="off"
               value={values.username}
               name="username"
               onChange={handleChange}
               isInvalid={!!errors.username}
-              autoFocus
             />
             <Form.Control.Feedback tooltip type="invalid">
               {errors.username}
@@ -82,12 +74,10 @@ const SignupForm = () => {
           <FloatingLabel
             controlId="password"
             className="mb-4"
-            label={t("page-singup.passwordLabel")}
+            label={t("page-login.passwordLabel")}
           >
             <Form.Control
-              placeholder={t("page-singup.passwordMinMax", {
-                min: PasswordLength.MIN,
-              })}
+              placeholder={t("page-login.passwordLabel")}
               autoComplete="off"
               value={values.password}
               name="password"
@@ -99,31 +89,13 @@ const SignupForm = () => {
               {errors.password}
             </Form.Control.Feedback>
           </FloatingLabel>
-          <FloatingLabel
-            controlId="confirm"
-            className="mb-4"
-            label={t("page-singup.confirmLabel")}
-          >
-            <Form.Control
-              placeholder={t("page-singup.confirmOneOf")}
-              autoComplete="off"
-              value={values.confirm}
-              name="confirm"
-              onChange={handleChange}
-              type="password"
-              isInvalid={!!errors.confirm}
-            />
-            <Form.Control.Feedback tooltip type="invalid">
-              {errors.confirm}
-            </Form.Control.Feedback>
-          </FloatingLabel>
           <Button
             type="submit"
             variant="outline-primary"
             className="w-100 mb-3"
             disabled={isSubmitting}
           >
-            {t("page-singup.submitButton")}
+            {t("page-login.submitButton")}
           </Button>
         </Form>
       )}
@@ -131,4 +103,4 @@ const SignupForm = () => {
   );
 };
 
-export { SignupForm };
+export { LoginForm };

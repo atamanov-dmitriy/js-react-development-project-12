@@ -7,7 +7,7 @@ const UsernameLength = {
 };
 
 const PasswordLength = {
-  MIN: 5,
+  MIN: 4,
 };
 
 const createValidationSchema = (t: TFunction<"translation", undefined>) =>

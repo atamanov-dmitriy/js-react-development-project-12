@@ -67,9 +67,11 @@ const LoginForm = () => {
               onChange={handleChange}
               isInvalid={!!errors.username}
             />
-            <Form.Control.Feedback tooltip type="invalid">
-              {errors.username}
-            </Form.Control.Feedback>
+            {errors.password !== errors.username && (
+              <Form.Control.Feedback tooltip type="invalid">
+                {errors.username}
+              </Form.Control.Feedback>
+            )}
           </FloatingLabel>
           <FloatingLabel
             controlId="password"
